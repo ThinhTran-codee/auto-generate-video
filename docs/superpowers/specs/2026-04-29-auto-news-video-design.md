@@ -2,7 +2,7 @@
 
 **Date:** 2026-04-29
 **Status:** Approved (MVP)
-**Channel:** Công nghệ 24h
+**Channel:** Tin Tức Mỗi Ngày
 
 ---
 
@@ -14,6 +14,7 @@ Xây dựng hệ thống tạo video tin tức ngắn 9:16 (~60s, tolerance 48�
 **Đầu ra:** 1 thư mục chứa `video.mp4` (không sub, không nhạc nền) + `voice.mp3` + `script.txt` để import vào CapCut Pro thêm caption + nhạc.
 
 **Không thuộc MVP:**
+
 - Caption burned-in (CapCut xử lý)
 - Background music (CapCut xử lý)
 - Multi-news compilation
@@ -26,18 +27,18 @@ Xây dựng hệ thống tạo video tin tức ngắn 9:16 (~60s, tolerance 48�
 
 ## 2. Quyết định kiến trúc cốt lõi
 
-| Quyết định | Lựa chọn | Lý do |
-|---|---|---|
-| Ngôn ngữ MVP | Chỉ tiếng Việt | Scope nhỏ, tránh phức tạp font/TTS đa ngôn ngữ |
-| TTS provider | LucyLab.io (JSON-RPC async) | User đã có account + voice cloning chất lượng |
-| Render engine | HyperFrames (HTML+GSAP+Puppeteer+FFmpeg) | Native vertical video, agent-friendly, deterministic |
-| Invocation | Claude Code skill | Tự nhiên với hyperframes (cũng skill-based), tận dụng LLM cho kịch bản |
-| Phân vai | Skill (creative) + Node CLI (deterministic) | LLM viết script + CLI gọi API/render — đúng strength mỗi bên |
-| Visual style | Ảnh bài báo + Ken Burns + GSAP animation đa dạng | Hấp dẫn hơn kinetic typography, đơn giản hơn newscaster template |
-| Caption | Bỏ khỏi pipeline | User add bằng CapCut auto-caption (đẹp hơn) |
-| BGM | Bỏ khỏi pipeline | User add bằng CapCut (thư viện bản quyền) |
-| Ảnh nguồn | Auto từ `og:image`, fallback gradient | Đa số bài báo VN có og:image; gradient cho file txt |
-| Outro | 3s card cố định | "Theo dõi để xem bản tin mới mỗi ngày" + "Công nghệ 24h" + "Nguồn: <domain>" |
+| Quyết định    | Lựa chọn                                         | Lý do                                                                           |
+| ------------- | ------------------------------------------------ | ------------------------------------------------------------------------------- |
+| Ngôn ngữ MVP  | Chỉ tiếng Việt                                   | Scope nhỏ, tránh phức tạp font/TTS đa ngôn ngữ                                  |
+| TTS provider  | LucyLab.io (JSON-RPC async)                      | User đã có account + voice cloning chất lượng                                   |
+| Render engine | HyperFrames (HTML+GSAP+Puppeteer+FFmpeg)         | Native vertical video, agent-friendly, deterministic                            |
+| Invocation    | Claude Code skill                                | Tự nhiên với hyperframes (cũng skill-based), tận dụng LLM cho kịch bản          |
+| Phân vai      | Skill (creative) + Node CLI (deterministic)      | LLM viết script + CLI gọi API/render — đúng strength mỗi bên                    |
+| Visual style  | Ảnh bài báo + Ken Burns + GSAP animation đa dạng | Hấp dẫn hơn kinetic typography, đơn giản hơn newscaster template                |
+| Caption       | Bỏ khỏi pipeline                                 | User add bằng CapCut auto-caption (đẹp hơn)                                     |
+| BGM           | Bỏ khỏi pipeline                                 | User add bằng CapCut (thư viện bản quyền)                                       |
+| Ảnh nguồn     | Auto từ `og:image`, fallback gradient            | Đa số bài báo VN có og:image; gradient cho file txt                             |
+| Outro         | 3s card cố định                                  | "Theo dõi để xem bản tin mới mỗi ngày" + "Tin Tức Mỗi Ngày" + "Nguồn: <domain>" |
 
 ## 3. Kiến trúc tổng quan
 
@@ -82,7 +83,7 @@ NODE CLI (deterministic, có test)
       "domain": "vnexpress.net",
       "image": "https://i1-vnexpress.vnecdn.net/.../iphone17.jpg"
     },
-    "channel": "Công nghệ 24h"
+    "channel": "Tin Tức Mỗi Ngày"
   },
   "voice": {
     "provider": "lucylab",
@@ -95,34 +96,80 @@ NODE CLI (deterministic, có test)
       "type": "hook",
       "voiceText": "Apple vừa ra mắt iPhone 17 với camera hai trăm megapixel.",
       "visual": {
-        "background": { "type": "image", "src": "$source.image", "kenBurns": "zoom-in" },
-        "overlay":    { "darkness": 0.4 },
+        "background": {
+          "type": "image",
+          "src": "$source.image",
+          "kenBurns": "zoom-in"
+        },
+        "overlay": { "darkness": 0.4 },
         "text": {
           "position": "center",
           "style": "hook-large",
           "lines": [
-            { "content": "iPhone 17",     "emphasis": "primary", "animation": "scale-pop" },
-            { "content": "Camera 200MP!", "emphasis": "accent",  "animation": "slide-up-bounce" }
+            {
+              "content": "iPhone 17",
+              "emphasis": "primary",
+              "animation": "scale-pop"
+            },
+            {
+              "content": "Camera 200MP!",
+              "emphasis": "accent",
+              "animation": "slide-up-bounce"
+            }
           ]
         },
         "effects": ["flash-white-3f", "particle-burst"]
       }
     },
-    { "id": "body-1", "type": "body", "voiceText": "...", "visual": { /* ... */ } },
-    { "id": "body-2", "type": "body", "voiceText": "...", "visual": { /* ... */ } },
-    { "id": "body-3", "type": "body", "voiceText": "...", "visual": { /* ... */ } },
+    {
+      "id": "body-1",
+      "type": "body",
+      "voiceText": "...",
+      "visual": {
+        /* ... */
+      }
+    },
+    {
+      "id": "body-2",
+      "type": "body",
+      "voiceText": "...",
+      "visual": {
+        /* ... */
+      }
+    },
+    {
+      "id": "body-3",
+      "type": "body",
+      "voiceText": "...",
+      "visual": {
+        /* ... */
+      }
+    },
     {
       "id": "outro",
       "type": "outro",
-      "voiceText": "Theo dõi Công nghệ 24h để xem bản tin mới mỗi ngày.",
+      "voiceText": "Theo dõi Tin Tức Mỗi Ngày để cập nhật thông tin mới nhất.",
       "visual": {
         "background": { "type": "gradient", "preset": "outro-purple" },
         "text": {
-          "position": "center", "style": "outro-card",
+          "position": "center",
+          "style": "outro-card",
           "lines": [
-            { "content": "Theo dõi để xem bản tin mới mỗi ngày", "emphasis": "primary", "animation": "fade-in" },
-            { "content": "Công nghệ 24h",                        "emphasis": "channel", "animation": "scale-pop" },
-            { "content": "Nguồn: vnexpress.net",                 "emphasis": "muted",   "animation": "fade-in-late" }
+            {
+              "content": "Theo dõi để xem bản tin mới mỗi ngày",
+              "emphasis": "primary",
+              "animation": "fade-in"
+            },
+            {
+              "content": "Tin Tức Mỗi Ngày",
+              "emphasis": "channel",
+              "animation": "scale-pop"
+            },
+            {
+              "content": "Nguồn: vnexpress.net",
+              "emphasis": "muted",
+              "animation": "fade-in-late"
+            }
           ]
         }
       }
@@ -133,21 +180,21 @@ NODE CLI (deterministic, có test)
 
 ### 4.2. Enum cố định (CLI fail nếu sai)
 
-| Field | Giá trị hợp lệ |
-|---|---|
-| `scene.type` | `hook`, `body`, `outro` |
-| `background.type` | `image`, `gradient` |
-| `background.kenBurns` | `zoom-in`, `zoom-out`, `pan-left-slow`, `pan-right-slow`, `pan-up-slow`, `pan-down-slow` |
-| `background.preset` (gradient) | `outro-purple`, `outro-blue`, `news-red`, `news-dark` |
-| `text.position` | `center`, `top`, `bottom` |
-| `text.style` | `hook-large`, `body-medium`, `body-small`, `outro-card` |
-| `line.emphasis` | `primary`, `accent`, `channel`, `muted` |
-| `line.animation` | `scale-pop`, `slide-up`, `slide-up-bounce`, `slide-down`, `slide-left`, `slide-right`, `fade-in`, `fade-in-late`, `typewriter` |
-| `effects[]` | `flash-white-3f`, `particle-burst`, `screen-shake-light`, `color-flash-accent` |
+| Field                          | Giá trị hợp lệ                                                                                                                 |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| `scene.type`                   | `hook`, `body`, `outro`                                                                                                        |
+| `background.type`              | `image`, `gradient`                                                                                                            |
+| `background.kenBurns`          | `zoom-in`, `zoom-out`, `pan-left-slow`, `pan-right-slow`, `pan-up-slow`, `pan-down-slow`                                       |
+| `background.preset` (gradient) | `outro-purple`, `outro-blue`, `news-red`, `news-dark`                                                                          |
+| `text.position`                | `center`, `top`, `bottom`                                                                                                      |
+| `text.style`                   | `hook-large`, `body-medium`, `body-small`, `outro-card`                                                                        |
+| `line.emphasis`                | `primary`, `accent`, `channel`, `muted`                                                                                        |
+| `line.animation`               | `scale-pop`, `slide-up`, `slide-up-bounce`, `slide-down`, `slide-left`, `slide-right`, `fade-in`, `fade-in-late`, `typewriter` |
+| `effects[]`                    | `flash-white-3f`, `particle-burst`, `screen-shake-light`, `color-flash-accent`                                                 |
 
 ### 4.3. Quy tắc Claude tuân thủ
 
-- **Target khi sinh script:** ~150–200 từ tiếng Việt → ra ~55–65s khi đọc tốc độ 1.0 (target *trong lòng* khoảng tolerance 48–72s ở section 4.4)
+- **Target khi sinh script:** ~150–200 từ tiếng Việt → ra ~55–65s khi đọc tốc độ 1.0 (target _trong lòng_ khoảng tolerance 48–72s ở section 4.4)
 - Số scene: **5–8** (1 hook + 3–6 body + 1 outro)
 - Mỗi `line.content` **≤ 25 ký tự**
 - Mỗi scene có **1–3 lines**
@@ -162,6 +209,7 @@ NODE CLI (deterministic, có test)
 ### 4.4. Duration scene
 
 CLI **không** đọc duration từ JSON. CLI tự tính sau khi TTS:
+
 - `scene_duration = audio_duration + 0.3s` (gap nghỉ)
 - Tổng phải nằm trong **[48s, 72s]** (±20% từ 60s)
 - Ngoài range → log warning, **vẫn render** (user quyết định re-gen hay không)
@@ -170,10 +218,10 @@ CLI **không** đọc duration từ JSON. CLI tự tính sau khi TTS:
 
 CLI substitute các placeholder **trước khi** render HTML:
 
-| Placeholder | Substitute thành |
-|---|---|
-| `$source.image` (trong `background.src`) | Local path đã tải ở Step 3, vd `images/bg.jpg`. Nếu Step 3 fail và đã đánh dấu fallback → CLI tự đổi `background.type` thành `gradient` với preset `news-dark` |
-| `${VIETNAMESE_VOICEID}` (trong `voice.voiceId`) | Đọc từ env `VIETNAMESE_VOICEID`. Nếu trống → fail Step 1 |
+| Placeholder                                     | Substitute thành                                                                                                                                               |
+| ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `$source.image` (trong `background.src`)        | Local path đã tải ở Step 3, vd `images/bg.jpg`. Nếu Step 3 fail và đã đánh dấu fallback → CLI tự đổi `background.type` thành `gradient` với preset `news-dark` |
+| `${VIETNAMESE_VOICEID}` (trong `voice.voiceId`) | Đọc từ env `VIETNAMESE_VOICEID`. Nếu trống → fail Step 1                                                                                                       |
 
 Mọi field khác **không** support templating — Claude phải ghi giá trị literal.
 
@@ -287,16 +335,16 @@ Step 8. Summary
 
 ### 6.1. Error handling matrix
 
-| Lỗi | Hành động |
-|---|---|
-| Schema script.json sai | Fail Step 1 với path field cụ thể |
-| Thiếu env var | Fail Step 1, hướng dẫn copy `.env.example` |
-| `og:image` 404 / không phải ảnh | Step 3 warning, fallback gradient |
-| LucyLab API timeout/5xx | Retry 3 lần (1s, 2s, 4s) → fail Step 4 với scene id |
-| Poll quá 120s | Fail scene đó, in exportId để debug thủ công |
-| Voice tổng duration ngoài [48s,72s] | Warning, vẫn render |
-| Hyperframes render fail | Fail Step 7, giữ intermediate file |
-| Image valid nhưng <720px | Warning, vẫn dùng |
+| Lỗi                                 | Hành động                                           |
+| ----------------------------------- | --------------------------------------------------- |
+| Schema script.json sai              | Fail Step 1 với path field cụ thể                   |
+| Thiếu env var                       | Fail Step 1, hướng dẫn copy `.env.example`          |
+| `og:image` 404 / không phải ảnh     | Step 3 warning, fallback gradient                   |
+| LucyLab API timeout/5xx             | Retry 3 lần (1s, 2s, 4s) → fail Step 4 với scene id |
+| Poll quá 120s                       | Fail scene đó, in exportId để debug thủ công        |
+| Voice tổng duration ngoài [48s,72s] | Warning, vẫn render                                 |
+| Hyperframes render fail             | Fail Step 7, giữ intermediate file                  |
+| Image valid nhưng <720px            | Warning, vẫn dùng                                   |
 
 ## 7. Behavior của Skill `/create-news-video`
 
@@ -356,6 +404,7 @@ STEP 8. Báo cáo cho user
 ### 7.3. Examples trong skill body
 
 Skill kèm **2 example script.json hoàn chỉnh**:
+
 - 1 cho URL có ảnh (vnexpress demo)
 - 1 cho txt không ảnh (gradient fallback)
 
@@ -363,24 +412,24 @@ Skill kèm **2 example script.json hoàn chỉnh**:
 
 ### 7.4. Edge cases
 
-| Tình huống | Skill làm |
-|---|---|
-| URL paywall | Báo "không đọc được, hãy lưu nội dung vào txt" |
-| Nội dung gốc <200 từ | Cảnh báo "tin quá ngắn", vẫn tiếp tục |
-| Nội dung gốc >2000 từ | Tự rút gọn còn ý chính ra ~60s |
-| File txt rỗng/không tồn tại | Báo lỗi, không tạo dir |
-| Pipeline fail | Báo lỗi cụ thể + path output dir |
+| Tình huống                  | Skill làm                                      |
+| --------------------------- | ---------------------------------------------- |
+| URL paywall                 | Báo "không đọc được, hãy lưu nội dung vào txt" |
+| Nội dung gốc <200 từ        | Cảnh báo "tin quá ngắn", vẫn tiếp tục          |
+| Nội dung gốc >2000 từ       | Tự rút gọn còn ý chính ra ~60s                 |
+| File txt rỗng/không tồn tại | Báo lỗi, không tạo dir                         |
+| Pipeline fail               | Báo lỗi cụ thể + path output dir               |
 
 ## 8. Testing strategy
 
-| Module | Test | Mục đích |
-|---|---|---|
-| `script-schema.ts` (Zod) | Unit | Reject script sai (5-6 invalid fixture) |
-| `lucylab-client.ts` | Unit (mock HTTP) | Happy path + retry + poll timeout |
-| `audio-tools.ts` | Integration | ffprobe + concat thực với mp3 fixture |
-| `image-fetcher.ts` | Unit (mock HTTP) | Mime check, size check, fallback |
-| `html-composer.ts` | Snapshot | script.json fixed → composition.html khớp snapshot |
-| End-to-end | Manual smoke | 1 lần với URL thật, mắt người check |
+| Module                   | Test             | Mục đích                                           |
+| ------------------------ | ---------------- | -------------------------------------------------- |
+| `script-schema.ts` (Zod) | Unit             | Reject script sai (5-6 invalid fixture)            |
+| `lucylab-client.ts`      | Unit (mock HTTP) | Happy path + retry + poll timeout                  |
+| `audio-tools.ts`         | Integration      | ffprobe + concat thực với mp3 fixture              |
+| `image-fetcher.ts`       | Unit (mock HTTP) | Mime check, size check, fallback                   |
+| `html-composer.ts`       | Snapshot         | script.json fixed → composition.html khớp snapshot |
+| End-to-end               | Manual smoke     | 1 lần với URL thật, mắt người check                |
 
 **KHÔNG test:** LucyLab live API (tốn tiền/flaky), hyperframes binary output, nội dung script Claude sinh (creative).
 

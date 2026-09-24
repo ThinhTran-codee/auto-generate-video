@@ -21,6 +21,7 @@ Single argument: a news article URL (starts with `http://` or `https://`) OR a p
 ### Step 2: Fetch content
 
 **URL mode:**
+
 - Use `WebFetch` with prompt:
   ```
   Trích xuất từ trang này:
@@ -33,6 +34,7 @@ Single argument: a news article URL (starts with `http://` or `https://`) OR a p
 - If WebFetch fails (paywall, JS-rendered, 4xx) → tell user to save content to a .txt file and pass that instead. Stop.
 
 **File mode:**
+
 - Use `Read` to read the .txt file
 - Title = first non-empty line (strip whitespace, max 80 chars)
 - Content = remaining lines joined
@@ -51,6 +53,7 @@ Single argument: a news article URL (starts with `http://` or `https://`) OR a p
 Following the schema in `docs/superpowers/specs/2026-04-29-auto-news-video-design.md` Section 4. Key rules:
 
 **Script content (Vietnamese):**
+
 - Total voiceText: ~150–200 words → ~55–65s spoken at speed 1.0
 - Number of scenes: **5–8** (1 hook + 3–6 body + 1 outro)
 - Each scene voiceText is 1-3 short sentences, văn nói (spoken style, not formal)
@@ -62,39 +65,43 @@ The `voiceText` field is read aloud by LucyLab/ElevenLabs Vietnamese TTS. **Numb
 
 **Mandatory rules for `voiceText`:**
 
-| Number form | WRONG (TTS misreads) | RIGHT (spell out in Vietnamese) |
-|---|---|---|
-| Decimal version | `GPT 5.5` → "năm rưỡi" ❌ | `GPT năm chấm năm` ✅ |
-| Decimal stat | `82.7%` | `tám mươi hai phẩy bảy phần trăm` |
-| Version | `iPhone 17` | `iPhone mười bảy` (or `iPhone 17` works for whole numbers) |
-| Version with point | `iOS 18.2` | `iOS mười tám chấm hai` |
-| Tech spec | `200MP` | `hai trăm megapixel` |
-| Battery | `5000mAh` | `năm nghìn miliampe giờ` |
-| Tokens | `1M tokens` / `1000000 tokens` | `một triệu token` |
-| Price VND | `21 triệu đồng` | `hai mươi mốt triệu đồng` |
-| Price USD | `$5` | `năm đô la` (or `năm đô`) |
-| Multiplier | `2x` | `gấp đôi` (more natural than "hai lần") |
-| Year | `2026` | `hai nghìn không trăm hai mươi sáu` (or just `năm 2026` reads OK) |
-| Percentage with decimal | `30%` | `ba mươi phần trăm` |
-| Time | `60 giây` | `sáu mươi giây` |
-| Frequency | `5G` | `năm gờ` (be careful — TTS often says "năm-gờ") |
-| Channel name | `CườngIT` / `Cường IT` | `Cường ai ti` |
+| Number form             | WRONG (TTS misreads)                    | RIGHT (spell out in Vietnamese)                                   |
+| ----------------------- | --------------------------------------- | ----------------------------------------------------------------- |
+| Decimal version         | `GPT 5.5` → "năm rưỡi" ❌               | `GPT năm chấm năm` ✅                                             |
+| Decimal stat            | `82.7%`                                 | `tám mươi hai phẩy bảy phần trăm`                                 |
+| Version                 | `iPhone 17`                             | `iPhone mười bảy` (or `iPhone 17` works for whole numbers)        |
+| Version with point      | `iOS 18.2`                              | `iOS mười tám chấm hai`                                           |
+| Tech spec               | `200MP`                                 | `hai trăm megapixel`                                              |
+| Battery                 | `5000mAh`                               | `năm nghìn miliampe giờ`                                          |
+| Tokens                  | `1M tokens` / `1000000 tokens`          | `một triệu token`                                                 |
+| Price VND               | `21 triệu đồng`                         | `hai mươi mốt triệu đồng`                                         |
+| Price USD               | `$5`                                    | `năm đô la` (or `năm đô`)                                         |
+| Multiplier              | `2x`                                    | `gấp đôi` (more natural than "hai lần")                           |
+| Year                    | `2026`                                  | `hai nghìn không trăm hai mươi sáu` (or just `năm 2026` reads OK) |
+| Percentage with decimal | `30%`                                   | `ba mươi phần trăm`                                               |
+| Time                    | `60 giây`                               | `sáu mươi giây`                                                   |
+| Frequency               | `5G`                                    | `năm gờ` (be careful — TTS often says "năm-gờ")                   |
+| Channel name            | `Tin Tức Mỗi Ngày` / `Tin tức mỗi ngày` | `Tin tức mỗi ngày`                                                |
 
 **Notation choices:**
+
 - For decimal point use `chấm` (more spoken/natural) or `phẩy` (formal). Both work; pick consistent.
 - For comma separator, use `phẩy` (e.g. "1,000" → "một nghìn")
 - For ratio "3:1" → say `ba trên một` or `ba so với một`
 
 **English brand names — keep as-is**, TTS handles them OK:
+
 - `Apple`, `Google`, `OpenAI`, `Microsoft`, `TikTok`, `YouTube` ✅
 
 **English acronyms — write phonetically if TTS misreads:**
+
 - `AI` → write `ây ai`
 - `API` → write `ây pi ai`
 - `GPT` → usually OK; if not, write `gí pi tí`
 - `iOS` → write `ai ô ét` if matter
 
 **Symbols to AVOID in voiceText:**
+
 - `→` `&` `%` `$` `#` `+` `=` (TTS may say literal name or skip)
 - `!` `?` at end of sentence is OK — they create natural intonation
 - Emoji: NEVER (TTS pronounces or skips inconsistently)
@@ -105,17 +112,23 @@ The `voiceText` field is read aloud by LucyLab/ElevenLabs Vietnamese TTS. **Numb
 **Examples — full scene:**
 
 WRONG (will sound bad):
+
 ```json
 { "voiceText": "GPT 5.5 đạt 82.7% trên Terminal-Bench, vượt GPT 5.4 (75.1%)." }
 ```
+
 → TTS reads: "GPT năm rưỡi đạt tám mươi hai chấm bảy phần trăm trên Terminal-Bench..."
 
 RIGHT (natural):
+
 ```json
-{ "voiceText": "GPT năm chấm năm đạt tám mươi hai phẩy bảy phần trăm trên Terminal Bench, vượt phiên bản năm chấm bốn ở mức bảy mươi lăm phẩy một." }
+{
+  "voiceText": "GPT năm chấm năm đạt tám mươi hai phẩy bảy phần trăm trên Terminal Bench, vượt phiên bản năm chấm bốn ở mức bảy mươi lăm phẩy một."
+}
 ```
 
 **Note**: `templateData` (text on screen) CAN use original formatting — the visual is separate from spoken:
+
 ```json
 {
   "voiceText": "GPT năm chấm năm đạt tám mươi hai phẩy bảy phần trăm.",
@@ -128,11 +141,13 @@ RIGHT (natural):
 ```
 
 **Hook (most important — gets first 3 seconds of viewer attention):**
+
 - Must contain a claim, statistic, or curious question
 - NEVER generic ("Hôm nay chúng ta sẽ nói về..." is wrong)
 - ALWAYS include at least 1 effect: `flash-white-3f` or `particle-burst`
 
 **Visual rules:**
+
 - For image scenes: `background.src = "$source.image"` (literal — CLI substitutes)
 - Vary `kenBurns` across scenes (don't use `zoom-in` for every scene)
 - Vary text `animation` (don't use `slide-up` for every line)
@@ -140,6 +155,7 @@ RIGHT (natural):
 - Each scene 1-3 lines
 
 **Outro (always fixed format):**
+
 ```json
 {
   "id": "outro",
@@ -151,19 +167,33 @@ RIGHT (natural):
       "position": "center",
       "style": "outro-card",
       "lines": [
-        { "content": "Xem bản tin mới mỗi ngày", "emphasis": "primary", "animation": "fade-in" },
-        { "content": "CườngIT",            "emphasis": "channel", "animation": "scale-pop" },
-        { "content": "Nguồn: <DOMAIN>",          "emphasis": "muted",   "animation": "fade-in-late" }
+        {
+          "content": "Xem bản tin mới mỗi ngày",
+          "emphasis": "primary",
+          "animation": "fade-in"
+        },
+        {
+          "content": "CườngIT",
+          "emphasis": "channel",
+          "animation": "scale-pop"
+        },
+        {
+          "content": "Nguồn: <DOMAIN>",
+          "emphasis": "muted",
+          "animation": "fade-in-late"
+        }
       ]
     }
   }
 }
 ```
+
 Replace `<DOMAIN>` with the actual domain string. Note: outro line 1 is shortened to fit 25-char schema rule (full CTA "Theo dõi để xem bản tin mới mỗi ngày" is 36 chars).
 
 ### Step 5: Self-validate before writing
 
 Check:
+
 - Total word count ~150-200
 - Every line.content ≤ 25 chars
 - 5-8 scenes total
@@ -186,6 +216,7 @@ npm run pipeline -- <outputDir>/script.json
 ```
 
 If exit code != 0:
+
 - Report the error message clearly
 - Tell user the output dir path so they can inspect intermediate files
 
@@ -196,19 +227,23 @@ Only run this step if Step 7 (the pipeline) succeeded — don't caption a video 
 Write a short Vietnamese caption + exactly 4 hashtags for the video, based on `script.metadata.title` and the scenes' content (same topic understanding used to write the script — no new research needed).
 
 **Caption rules:**
+
 - 1 short, punchy line (~10–20 words), Vietnamese, văn nói.
 - Reuse or riff on the hook's claim/question — the caption is what gets someone to tap play, so it should carry the same curiosity/stat hook, not restate the title flatly.
 - Unlike `voiceText`, the caption is written text (not read by TTS) — 1 emoji is OK if it fits naturally, but don't force one in.
 - No markdown, no line breaks inside the caption itself.
 
 **Hashtag rules — exactly 4, in this order:**
+
 1. One broad tech/niche tag in Vietnamese (e.g. `#congnghe`, `#thutthuat`)
 2. One or two tags specific to the video's actual topic/product/company (e.g. `#openai`, `#ai`, `#pdf`, `#codegraph` — derive from the subject, don't reuse the same generic tag twice)
 3. One channel/discovery tag: `#cuongit` (and `#fyp` or `#xuhuong` if there's room — still capped at 4 total)
+
 - Lowercase, no spaces, no punctuation inside a tag.
 - Skip hashtags that don't genuinely fit the topic just to hit the count differently — 4 relevant tags beats 4 generic ones.
 
 Write the result to `<outputDir>/caption.txt` using the Write tool, formatted as:
+
 ```
 <caption line>
 
@@ -220,9 +255,9 @@ Write the result to `<outputDir>/caption.txt` using the Write tool, formatted as
 If successful, report to user with markdown links:
 
 ```markdown
-✓ Video:   [video.mp4](output/<slug>-<timestamp>/video.mp4)
-✓ Audio:   [voice.mp3](output/<slug>-<timestamp>/voice.mp3) — for CapCut
-✓ Script:  [script.txt](output/<slug>-<timestamp>/script.txt) — for CapCut auto-caption
+✓ Video: [video.mp4](output/<slug>-<timestamp>/video.mp4)
+✓ Audio: [voice.mp3](output/<slug>-<timestamp>/voice.mp3) — for CapCut
+✓ Script: [script.txt](output/<slug>-<timestamp>/script.txt) — for CapCut auto-caption
 ✓ Caption: [caption.txt](output/<slug>-<timestamp>/caption.txt) — for TikTok upload
 Tổng thời lượng: XX.Xs
 
@@ -237,6 +272,7 @@ Tổng thời lượng: XX.Xs
 User: `/create-news-video https://vnexpress.net/iphone-17-200mp`
 
 Generated `script.json` (excerpt):
+
 ```json
 {
   "version": "1.0",
@@ -247,21 +283,39 @@ Generated `script.json` (excerpt):
       "domain": "vnexpress.net",
       "image": "https://i1-vnexpress.vnecdn.net/iphone17.jpg"
     },
-    "channel": "Cường IT"
+    "channel": "Tin Tức Mỗi Ngày"
   },
-  "voice": { "provider": "lucylab", "voiceId": "${VIETNAMESE_VOICEID}", "speed": 1.0 },
+  "voice": {
+    "provider": "lucylab",
+    "voiceId": "${VIETNAMESE_VOICEID}",
+    "speed": 1.0
+  },
   "scenes": [
     {
-      "id": "hook", "type": "hook",
+      "id": "hook",
+      "type": "hook",
       "voiceText": "Apple vừa ra mắt iPhone 17 với camera hai trăm megapixel.",
       "visual": {
-        "background": { "type": "image", "src": "$source.image", "kenBurns": "zoom-in" },
-        "overlay":    { "darkness": 0.4 },
+        "background": {
+          "type": "image",
+          "src": "$source.image",
+          "kenBurns": "zoom-in"
+        },
+        "overlay": { "darkness": 0.4 },
         "text": {
-          "position": "center", "style": "hook-large",
+          "position": "center",
+          "style": "hook-large",
           "lines": [
-            { "content": "iPhone 17",     "emphasis": "primary", "animation": "scale-pop" },
-            { "content": "Camera 200MP!", "emphasis": "accent",  "animation": "slide-up-bounce" }
+            {
+              "content": "iPhone 17",
+              "emphasis": "primary",
+              "animation": "scale-pop"
+            },
+            {
+              "content": "Camera 200MP!",
+              "emphasis": "accent",
+              "animation": "slide-up-bounce"
+            }
           ]
         },
         "effects": ["flash-white-3f", "particle-burst"]
@@ -277,24 +331,35 @@ Generated `script.json` (excerpt):
 User: `/create-news-video news/agi-update.txt`
 
 Generated `script.json` (excerpt):
+
 ```json
 {
   "metadata": {
     "title": "OpenAI công bố mô hình mới với khả năng lập luận",
     "source": { "url": "local", "domain": "local", "image": null },
-    "channel": "Cường IT"
+    "channel": "Tin Tức Mỗi Ngày"
   },
   "scenes": [
     {
-      "id": "hook", "type": "hook",
+      "id": "hook",
+      "type": "hook",
       "voiceText": "OpenAI vừa công bố mô hình mới có khả năng lập luận như con người.",
       "visual": {
         "background": { "type": "gradient", "preset": "news-dark" },
         "text": {
-          "position": "center", "style": "hook-large",
+          "position": "center",
+          "style": "hook-large",
           "lines": [
-            { "content": "Mô hình mới", "emphasis": "primary", "animation": "scale-pop" },
-            { "content": "Lập luận!",  "emphasis": "accent",  "animation": "slide-up-bounce" }
+            {
+              "content": "Mô hình mới",
+              "emphasis": "primary",
+              "animation": "scale-pop"
+            },
+            {
+              "content": "Lập luận!",
+              "emphasis": "accent",
+              "animation": "slide-up-bounce"
+            }
           ]
         },
         "effects": ["flash-white-3f"]
@@ -304,6 +369,7 @@ Generated `script.json` (excerpt):
   ]
 }
 ```
+
 Note: when source has no image, every scene uses `background.type = "gradient"` (no image fallback at composer level needed).
 
 ## Sound Effects (SFX)
@@ -334,11 +400,13 @@ Within a category, the actual file is picked **deterministically** by hashing th
 ### When to add explicit `sfx` override
 
 Only when you want to FORCE a specific sound that the keyword matcher won't infer:
+
 - Scene needs a particular signature sound (e.g., always a gong on important scenes)
 - Disable SFX for a particular scene: `"sfx": { "name": "none" }`
 - Use a specific file: `"sfx": { "name": "transition/whoosh-sfx", "volume": 0.4 }`
 
 Example (rarely needed):
+
 ```json
 {
   "id": "body-3",
@@ -350,24 +418,24 @@ Example (rarely needed):
 
 The pipeline auto-mixes a sound effect at each scene start based on the template type:
 
-| Template | Default SFX | Sound character |
-|---|---|---|
-| `hook` | `transition/whoosh-soft` | Dramatic entrance |
-| `comparison` | `transition/swoosh` | Side-by-side reveal |
-| `stat-hero` | `emphasis/ding` | Number reveal |
-| `feature-list` | `transition/pop` | Bullet appearance |
-| `callout` | `alert/notification` | Important info |
-| `outro` | `outro/tada` | Ending signature |
+| Template       | Default SFX              | Sound character     |
+| -------------- | ------------------------ | ------------------- |
+| `hook`         | `transition/whoosh-soft` | Dramatic entrance   |
+| `comparison`   | `transition/swoosh`      | Side-by-side reveal |
+| `stat-hero`    | `emphasis/ding`          | Number reveal       |
+| `feature-list` | `transition/pop`         | Bullet appearance   |
+| `callout`      | `alert/notification`     | Important info      |
+| `outro`        | `outro/tada`             | Ending signature    |
 
 **You usually do NOT need to add a `sfx` field** — defaults work for 95% of cases.
 
 **ONLY add an explicit `sfx` override when content STRONGLY suggests a different mood:**
 
-| Content cue (in voiceText) | Override |
-|---|---|
-| "cảnh báo", "rủi ro", "đáng lo", "nguy hiểm" | `{ "name": "alert/notification", "volume": 0.4 }` |
-| "vượt", "kỷ lục", "xuất sắc", "tăng mạnh" (positive stat) | `{ "name": "emphasis/chime", "volume": 0.35 }` |
-| Want to disable SFX for this scene | `{ "name": "none" }` |
+| Content cue (in voiceText)                                | Override                                          |
+| --------------------------------------------------------- | ------------------------------------------------- |
+| "cảnh báo", "rủi ro", "đáng lo", "nguy hiểm"              | `{ "name": "alert/notification", "volume": 0.4 }` |
+| "vượt", "kỷ lục", "xuất sắc", "tăng mạnh" (positive stat) | `{ "name": "emphasis/chime", "volume": 0.35 }`    |
+| Want to disable SFX for this scene                        | `{ "name": "none" }`                              |
 
 Place `sfx` at the same level as `voiceText` and `templateData`:
 
@@ -382,6 +450,7 @@ Place `sfx` at the same level as `voiceText` and `templateData`:
 ```
 
 Available SFX categories (any `<name>` subfolder in `assets/sfx/<category>/<name>.mp3`):
+
 - `transition/` — whoosh, swoosh, swish, pop, punch, page-flip, slide, riser
 - `emphasis/` — ding, tick, chime, ping, bong, pop, punch
 - `alert/` — notification, alert, alarm, warning
@@ -394,16 +463,17 @@ Available SFX categories (any `<name>` subfolder in `assets/sfx/<category>/<name
 - `cinematic/` — rise, impact
 
 Browse `assets/sfx/<category>/` to see exact filenames. Reference WITHOUT the `.mp3` extension. Example:
+
 ```json
 { "sfx": { "name": "success/xbox-360-achievement-sound", "volume": 0.4 } }
 ```
 
 ## Edge cases
 
-| Situation | Action |
-|---|---|
+| Situation                                               | Action                                                                                                         |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | URL paywall / JS-rendered → WebFetch returns no content | Tell user: "Không đọc được URL (có thể do paywall hoặc JS). Hãy lưu nội dung vào file .txt rồi gọi lại." Stop. |
-| URL content < 200 words | Warn "Tin gốc ngắn, video có thể không đủ chất liệu", continue anyway |
-| URL content > 2000 words | Summarize to key points, fit ~150-200 words script |
-| File mode + file empty/missing | Error message, don't create output dir |
-| Pipeline fails | Report error message + output dir path; user can re-try `npm run pipeline -- <path>` after fixing |
+| URL content < 200 words                                 | Warn "Tin gốc ngắn, video có thể không đủ chất liệu", continue anyway                                          |
+| URL content > 2000 words                                | Summarize to key points, fit ~150-200 words script                                                             |
+| File mode + file empty/missing                          | Error message, don't create output dir                                                                         |
+| Pipeline fails                                          | Report error message + output dir path; user can re-try `npm run pipeline -- <path>` after fixing              |

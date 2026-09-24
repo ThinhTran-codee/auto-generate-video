@@ -7,9 +7,13 @@
       "domain": "local",
       "image": null
     },
-    "channel": "Công nghệ 24h"
+    "channel": "Tin Tức Mỗi Ngày"
   },
-  "voice": { "provider": "lucylab", "voiceId": "${VIETNAMESE_VOICEID}", "speed": 1.0 },
+  "voice": {
+    "provider": "lucylab",
+    "voiceId": "${VIETNAMESE_VOICEID}",
+    "speed": 1.0
+  },
   "scenes": [
     {
       "id": "hook",
@@ -56,11 +60,11 @@
     {
       "id": "outro",
       "type": "outro",
-      "voiceText": "Theo dõi Công nghệ 24h để xem bản tin mới mỗi ngày.",
+      "voiceText": "Theo dõi Tin Tức Mỗi Ngày để cập nhật thông tin mới nhất.",
       "templateData": {
         "template": "outro",
         "ctaTop": "Theo dõi ngay",
-        "channelName": "Công nghệ 24h",
+        "channelName": "Tin Tức Mỗi Ngày",
         "source": "local"
       }
     }
