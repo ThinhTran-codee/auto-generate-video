@@ -110,11 +110,6 @@ function renderShell(
   </div>
 </div>
 
-<div class="brand-shell-handle">
-  <span class="handle-music">&#9835;</span>
-  <span class="handle-text">${handle}</span>
-</div>
-
 <div class="brand-shell-keyword">
   <span>${escapeHtml(domain)}</span>
 </div>
