@@ -7,7 +7,7 @@
       "domain": "vnexpress.net",
       "image": "https://i1-vnexpress.vnecdn.net/iphone17.jpg"
     },
-    "channel": "Tin Tức Mỗi Ngày"
+    "channel": "Hay Hóng Hớt"
   },
   "voice": {
     "provider": "lucylab",
@@ -62,11 +62,11 @@
     {
       "id": "outro",
       "type": "outro",
-      "voiceText": "Theo dõi Tin Tức Mỗi Ngày để cập nhật thông tin mới nhất.",
+      "voiceText": "Theo dõi Hay Hóng Hớt để cập nhật thông tin mới nhất.",
       "templateData": {
         "template": "outro",
         "ctaTop": "Theo dõi ngay",
-        "channelName": "Tin Tức Mỗi Ngày",
+        "channelName": "Hay Hóng Hớt",
         "source": "vnexpress.net"
       }
     }

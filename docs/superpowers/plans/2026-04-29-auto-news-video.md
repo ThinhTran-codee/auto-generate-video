@@ -202,7 +202,7 @@ git commit -m "chore: initial project scaffold"
       "domain": "vnexpress.net",
       "image": "https://i1-vnexpress.vnecdn.net/iphone17.jpg"
     },
-    "channel": "Tin Tức Mỗi Ngày"
+    "channel": "Hay Hóng Hớt"
   },
   "voice": {
     "provider": "lucylab",
@@ -333,7 +333,7 @@ git commit -m "chore: initial project scaffold"
     {
       "id": "outro",
       "type": "outro",
-      "voiceText": "Theo dõi Tin Tức Mỗi Ngày Để Cập Nhật Các Thông Tin Mới Nhất",
+      "voiceText": "Theo dõi Hay Hóng Hớt Để Cập Nhật Các Thông Tin Mới Nhất",
       "visual": {
         "background": { "type": "gradient", "preset": "outro-purple" },
         "text": {
@@ -346,7 +346,7 @@ git commit -m "chore: initial project scaffold"
               "animation": "fade-in"
             },
             {
-              "content": "Tin Tức Mỗi Ngày",
+              "content": "Hay Hóng Hớt",
               "emphasis": "channel",
               "animation": "scale-pop"
             },
@@ -2405,7 +2405,7 @@ Following the schema in `docs/superpowers/specs/2026-04-29-auto-news-video-desig
 {
   "id": "outro",
   "type": "outro",
-  "voiceText": "Theo dõi Tin Tức Mỗi Ngày để cập nhật các thông tin mới nhất.",
+  "voiceText": "Theo dõi Hay Hóng Hớt để cập nhật các thông tin mới nhất.",
   "visual": {
     "background": { "type": "gradient", "preset": "outro-purple" },
     "text": {
@@ -2418,7 +2418,7 @@ Following the schema in `docs/superpowers/specs/2026-04-29-auto-news-video-desig
           "animation": "fade-in"
         },
         {
-          "content": "Tin Tức Mỗi Ngày",
+          "content": "Hay Hóng Hớt",
           "emphasis": "channel",
           "animation": "scale-pop"
         },
@@ -2498,7 +2498,7 @@ Generated `script.json` (excerpt):
       "domain": "vnexpress.net",
       "image": "https://i1-vnexpress.vnecdn.net/iphone17.jpg"
     },
-    "channel": "Tin Tức Mỗi Ngày"
+    "channel": "Hay Hóng Hớt"
   },
   "voice": {
     "provider": "lucylab",
@@ -2552,7 +2552,7 @@ Generated `script.json` (excerpt):
   "metadata": {
     "title": "OpenAI công bố mô hình mới với khả năng lập luận",
     "source": { "url": "local", "domain": "local", "image": null },
-    "channel": "Tin Tức Mỗi Ngày"
+    "channel": "Hay Hóng Hớt"
   },
   "scenes": [
     {
@@ -2783,7 +2783,7 @@ Visual verification:
 - Hook hấp dẫn 3s đầu (effect flash hoặc particle)
 - Background animation (Ken Burns hoặc gradient)
 - Text animations đa dạng
-- Outro card có "Tin Tức Mỗi Ngày" + "Nguồn: <domain>"
+- Outro card có "Hay Hóng Hớt" + "Nguồn: <domain>"
 
 - [ ] **Step 5: File mode test**
 

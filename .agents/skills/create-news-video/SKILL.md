@@ -61,23 +61,23 @@ The `voiceText` field is read aloud by Edge TTS / LucyLab / ElevenLabs / Vbee. *
 
 **Mandatory rules for `voiceText`:**
 
-| Number form             | WRONG (TTS misreads)                    | RIGHT (spell out in Vietnamese)                                   |
-| ----------------------- | --------------------------------------- | ----------------------------------------------------------------- |
-| Decimal version         | `GPT 5.5` → "năm rưỡi" ❌               | `GPT năm chấm năm` ✅                                             |
-| Decimal stat            | `82.7%`                                 | `tám mươi hai phẩy bảy phần trăm`                                 |
-| Version                 | `iPhone 17`                             | `iPhone mười bảy` (or `iPhone 17` works for whole numbers)        |
-| Version with point      | `iOS 18.2`                              | `iOS mười tám chấm hai`                                           |
-| Tech spec               | `200MP`                                 | `hai trăm megapixel`                                              |
-| Battery                 | `5000mAh`                               | `năm nghìn miliampe giờ`                                          |
-| Tokens                  | `1M tokens` / `1000000 tokens`          | `một triệu token`                                                 |
-| Price VND               | `21 triệu đồng`                         | `hai mươi mốt triệu đồng`                                         |
-| Price USD               | `$5`                                    | `năm đô la` (or `năm đô`)                                         |
-| Multiplier              | `2x`                                    | `gấp đôi` (more natural than "hai lần")                           |
-| Year                    | `2026`                                  | `hai nghìn không trăm hai mươi sáu` (or just `năm 2026` reads OK) |
-| Percentage with decimal | `30%`                                   | `ba mươi phần trăm`                                               |
-| Time                    | `60 giây`                               | `sáu mươi giây`                                                   |
-| Frequency               | `5G`                                    | `năm gờ` (be careful — TTS often says "năm-gờ")                   |
-| Channel name            | `Tin Tức Mỗi Ngày` / `Tin tức mỗi ngày` | `Tin tức mỗi ngày`                                                |
+| Number form             | WRONG (TTS misreads)            | RIGHT (spell out in Vietnamese)                                   |
+| ----------------------- | ------------------------------- | ----------------------------------------------------------------- |
+| Decimal version         | `GPT 5.5` → "năm rưỡi" ❌       | `GPT năm chấm năm` ✅                                             |
+| Decimal stat            | `82.7%`                         | `tám mươi hai phẩy bảy phần trăm`                                 |
+| Version                 | `iPhone 17`                     | `iPhone mười bảy` (or `iPhone 17` works for whole numbers)        |
+| Version with point      | `iOS 18.2`                      | `iOS mười tám chấm hai`                                           |
+| Tech spec               | `200MP`                         | `hai trăm megapixel`                                              |
+| Battery                 | `5000mAh`                       | `năm nghìn miliampe giờ`                                          |
+| Tokens                  | `1M tokens` / `1000000 tokens`  | `một triệu token`                                                 |
+| Price VND               | `21 triệu đồng`                 | `hai mươi mốt triệu đồng`                                         |
+| Price USD               | `$5`                            | `năm đô la` (or `năm đô`)                                         |
+| Multiplier              | `2x`                            | `gấp đôi` (more natural than "hai lần")                           |
+| Year                    | `2026`                          | `hai nghìn không trăm hai mươi sáu` (or just `năm 2026` reads OK) |
+| Percentage with decimal | `30%`                           | `ba mươi phần trăm`                                               |
+| Time                    | `60 giây`                       | `sáu mươi giây`                                                   |
+| Frequency               | `5G`                            | `năm gờ` (be careful — TTS often says "năm-gờ")                   |
+| Channel name            | `Hay Hóng Hớt` / `hay hóng hớt` | `Hay Hóng Hớt`                                                    |
 
 **Notation choices:**
 

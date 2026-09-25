@@ -29,11 +29,12 @@ export class EdgeTtsClient implements TtsClient {
     audioOutPath: string,
     srtOutPath?: string,
   ): Promise<void> {
-    const delays = [1000, 2000, 4000];
+    const delays = [1500, 3000, 6000, 10000];
     let lastErr: unknown;
 
-    for (let attempt = 0; attempt < 4; attempt++) {
+    for (let attempt = 0; attempt < delays.length; attempt++) {
       try {
+        await sleep(1000);
         const tts = new EdgeTTS(text, this.cfg.voice, {
           rate: this.cfg.rate ?? "+0%",
           pitch: this.cfg.pitch ?? "+0Hz",
@@ -54,7 +55,7 @@ export class EdgeTtsClient implements TtsClient {
         return;
       } catch (e) {
         lastErr = e;
-        if (attempt === delays.length) throw e;
+        if (attempt === delays.length - 1) throw e;
         await sleep(delays[attempt]);
       }
     }

@@ -2,7 +2,7 @@
 
 **Date:** 2026-04-29
 **Status:** Approved (MVP)
-**Channel:** Tin Tức Mỗi Ngày
+**Channel:** Hay Hóng Hớt
 
 ---
 
@@ -27,18 +27,18 @@ Xây dựng hệ thống tạo video tin tức ngắn 9:16 (~60s, tolerance 48�
 
 ## 2. Quyết định kiến trúc cốt lõi
 
-| Quyết định    | Lựa chọn                                         | Lý do                                                                           |
-| ------------- | ------------------------------------------------ | ------------------------------------------------------------------------------- |
-| Ngôn ngữ MVP  | Chỉ tiếng Việt                                   | Scope nhỏ, tránh phức tạp font/TTS đa ngôn ngữ                                  |
-| TTS provider  | LucyLab.io (JSON-RPC async)                      | User đã có account + voice cloning chất lượng                                   |
-| Render engine | HyperFrames (HTML+GSAP+Puppeteer+FFmpeg)         | Native vertical video, agent-friendly, deterministic                            |
-| Invocation    | Claude Code skill                                | Tự nhiên với hyperframes (cũng skill-based), tận dụng LLM cho kịch bản          |
-| Phân vai      | Skill (creative) + Node CLI (deterministic)      | LLM viết script + CLI gọi API/render — đúng strength mỗi bên                    |
-| Visual style  | Ảnh bài báo + Ken Burns + GSAP animation đa dạng | Hấp dẫn hơn kinetic typography, đơn giản hơn newscaster template                |
-| Caption       | Bỏ khỏi pipeline                                 | User add bằng CapCut auto-caption (đẹp hơn)                                     |
-| BGM           | Bỏ khỏi pipeline                                 | User add bằng CapCut (thư viện bản quyền)                                       |
-| Ảnh nguồn     | Auto từ `og:image`, fallback gradient            | Đa số bài báo VN có og:image; gradient cho file txt                             |
-| Outro         | 3s card cố định                                  | "Theo dõi để xem bản tin mới mỗi ngày" + "Tin Tức Mỗi Ngày" + "Nguồn: <domain>" |
+| Quyết định    | Lựa chọn                                         | Lý do                                                                       |
+| ------------- | ------------------------------------------------ | --------------------------------------------------------------------------- |
+| Ngôn ngữ MVP  | Chỉ tiếng Việt                                   | Scope nhỏ, tránh phức tạp font/TTS đa ngôn ngữ                              |
+| TTS provider  | LucyLab.io (JSON-RPC async)                      | User đã có account + voice cloning chất lượng                               |
+| Render engine | HyperFrames (HTML+GSAP+Puppeteer+FFmpeg)         | Native vertical video, agent-friendly, deterministic                        |
+| Invocation    | Claude Code skill                                | Tự nhiên với hyperframes (cũng skill-based), tận dụng LLM cho kịch bản      |
+| Phân vai      | Skill (creative) + Node CLI (deterministic)      | LLM viết script + CLI gọi API/render — đúng strength mỗi bên                |
+| Visual style  | Ảnh bài báo + Ken Burns + GSAP animation đa dạng | Hấp dẫn hơn kinetic typography, đơn giản hơn newscaster template            |
+| Caption       | Bỏ khỏi pipeline                                 | User add bằng CapCut auto-caption (đẹp hơn)                                 |
+| BGM           | Bỏ khỏi pipeline                                 | User add bằng CapCut (thư viện bản quyền)                                   |
+| Ảnh nguồn     | Auto từ `og:image`, fallback gradient            | Đa số bài báo VN có og:image; gradient cho file txt                         |
+| Outro         | 3s card cố định                                  | "Theo dõi để xem bản tin mới mỗi ngày" + "Hay Hóng Hớt" + "Nguồn: <domain>" |
 
 ## 3. Kiến trúc tổng quan
 
@@ -83,7 +83,7 @@ NODE CLI (deterministic, có test)
       "domain": "vnexpress.net",
       "image": "https://i1-vnexpress.vnecdn.net/.../iphone17.jpg"
     },
-    "channel": "Tin Tức Mỗi Ngày"
+    "channel": "Hay Hóng Hớt"
   },
   "voice": {
     "provider": "lucylab",
@@ -148,7 +148,7 @@ NODE CLI (deterministic, có test)
     {
       "id": "outro",
       "type": "outro",
-      "voiceText": "Theo dõi Tin Tức Mỗi Ngày để cập nhật thông tin mới nhất.",
+      "voiceText": "Theo dõi Hay Hóng Hớt để cập nhật thông tin mới nhất.",
       "visual": {
         "background": { "type": "gradient", "preset": "outro-purple" },
         "text": {
@@ -161,7 +161,7 @@ NODE CLI (deterministic, có test)
               "animation": "fade-in"
             },
             {
-              "content": "Tin Tức Mỗi Ngày",
+              "content": "Hay Hóng Hớt",
               "emphasis": "channel",
               "animation": "scale-pop"
             },

@@ -40,7 +40,7 @@ describe('composeHtml', () => {
     expect(html).toContain('id="grain-overlay"');
     // Shell has no data-start (persistent)
     expect(html).toContain('class="brand-name"');
-    expect(html).toContain('Tin Tức Mỗi Ngày');
+    expect(html).toContain('Hay Hóng Hớt');
 
     // ── Hook scene ─────────────────────────────────────────────
     expect(html).toContain('data-layout="hook"');
